@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-
 import { AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/sidebar";
 import { Footer } from "@/components/footer";
@@ -21,28 +20,28 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} overflow-x-hidden`}>
-        <AnimatePresence mode="wait">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="relative flex flex-col overflow-x-hidden">
-              {/* <MainNav /> */}
-              <div className="flex-1 flex-col">
-                <Sidebar />
-                <main
-                >
+    <body className={inter.className}>
+      <AnimatePresence mode="wait">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="min-h-screen flex">
+            <Sidebar />
+            <div className="flex-1 flex flex-col min-h-screen md:pl-[290px]">
+              <main className="flex-1 w-full">
+                <div className=" mx-auto p-0">
                   {children}
-                  <Footer />
-                </main>
-              </div>
+                </div>
+              </main>
+              <Footer />
             </div>
-          </ThemeProvider>
-        </AnimatePresence>
-      </body>
-    </html>
+          </div>
+        </ThemeProvider>
+      </AnimatePresence>
+    </body>
+  </html>
   );
 }

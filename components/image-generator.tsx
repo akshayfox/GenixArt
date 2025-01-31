@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ImageIcon, RefreshCw, Download } from 'lucide-react';
@@ -140,6 +139,16 @@ export function ImageGenerator() {
                   <Download className="h-4 w-4" />
                 </Button>
               </>
+            ) : loading ? (
+              <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
+                <div className="relative h-16 w-16">
+                  <div className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-75"></div>
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-blue-500">
+                    <ImageIcon className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+                <p className="text-sm">Creating your masterpiece...</p>
+              </div>
             ) : (
               <div className="flex h-full items-center justify-center text-muted-foreground">
                 <ImageIcon className="h-12 w-12" />
@@ -151,3 +160,5 @@ export function ImageGenerator() {
     </div>
   );
 }
+
+export default ImageGenerator;

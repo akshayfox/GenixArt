@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
@@ -14,9 +13,9 @@ import {
   X
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { APP_NAME } from '@/constants/constants';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const sidebarNavItems = [
   {
@@ -29,105 +28,111 @@ const sidebarNavItems = [
     icon: ImageIcon,
     href: "/generate",
   },
-  {
-    title: "History",
-    icon: History,
-    href: "/history",
-  },
-  {
-    title: "Guides",
-    icon: BookOpen,
-    href: "/guides",
-  },
-  {
-    title: "Settings",
-    icon: Settings,
-    href: "/settings",
-  },
+
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('sidebar');
+      const menuButton = document.getElementById('menu-button');
+      
+      if (sidebar && !sidebar.contains(event.target as Node) && 
+          menuButton && !menuButton.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
-<>
-  {/* Mobile Toggle Button */}
-  <button
-    onClick={() => setIsOpen(!isOpen)}
-    className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white/10 text-white md:hidden">
-    {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-  </button>
+    <>
+      <Button
+        id="menu-button"
+        onClick={() => setIsOpen(!isOpen)}
+        variant="ghost"
+        className="fixed top-4 left-4 z-50 p-2 md:hidden hover:bg-white/10"
+        size="icon"
+      >
+        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+      </Button>
 
-  {/* Mobile Overlay */}
-  {isOpen && (
-    <div
-      className="fixed inset-0 bg-black/50 z-30 md:hidden"
-      onClick={() => setIsOpen(false)}
-    />
-  )}
+      <aside
+        id="sidebar"
+        className={`fixed top-0 left-0 h-screen w-[290px] z-40 
+          transform transition-all duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
+          md:translate-x-0 flex flex-col
+          bg-gradient-to-b from-gray-900 to-black `}
+      >
+        <div className="relative h-full flex flex-col">
+          <div className="p-6 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600">
+                <SparklesIcon className="h-6 w-6 text-white" />
+              </div>
+              <span className="font-heading text-xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                {APP_NAME}
+              </span>
+            </div>
+          </div>
 
-  {/* Sidebar */}
-  <div
-    className={`fixed top-0 left-0 h-full w-[290px] z-40
-      ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-      md:translate-x-0 transition-transform duration-300 ease-in-out`}>
-    
-    {/* Sidebar Background */}
-    <div className="absolute inset-0 bg-black/20 backdrop-blur-xl" />
 
-    <div className="relative h-full">
-      <div className="w-full md:flex items-center justify-center">
-        <SparklesIcon className="h-6 w-6" />
-        <span className="font-bold sm:inline-block ml-2">{APP_NAME}</span>
-      </div>
+          <ScrollArea className="flex-1 px-3 py-4">
+  <nav className="space-y-1">
+    {sidebarNavItems.map((item) => {
+      const isActive = pathname === item.href;
+      
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={`w-full flex items-center gap-3 p-3 transition-all duration-200 rounded-md
+          ${isActive 
+            ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-white' 
+            : 'text-white/70 hover:text-white hover:bg-white/10'
+          }`}
+        >
+          <item.icon className={`h-5 w-5 transition-colors ${
+            isActive ? 'text-blue-400' : 'text-white/70'
+          }`} />
+          <span className="font-medium">{item.title}</span>
+          {isActive && (
+            <div className="absolute left-0 top-0 h-full w-1 rounded-r" />
+          )}
+        </Link>
+      );
+    })}
+  </nav>
+</ScrollArea>
 
-      {/* Sidebar Content */}
-      <div className="p-4 md:p-6">
-        <div className="h-12 w-14 rounded-lg bg-white/10 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">A</span>
+          {/* Footer */}
+          <div className="p-4 border-t border-white/10 mt-auto">
+            <div className="rounded-lg bg-gradient-to-r from-blue-600/10 to-purple-600/10 p-4">
+              <p className="text-sm text-white/70">
+                Need help? Check our guides or contact support.
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      {/* Scrollable Menu Items */}
-      <ScrollArea className="h-[calc(100vh-8rem)] px-2 overflow-y-auto">
-        <div className="space-y-2">
-          {sidebarNavItems.map((item) => {
-            const isActive = pathname === item.href;
-
-            return (
-              <button
-                key={item.href}
-                onClick={() => {
-                  window.location.href = item.href;
-                  setIsOpen(false); // Close mobile menu after navigation
-                }}
-                className={`group relative w-full overflow-hidden rounded-xl p-2 ${isActive ? "bg-white/10" : ""}`}>
-                
-                <div
-                  className={`absolute inset-0 transition-all duration-300 ${isActive ? "bg-white/10" : "bg-white/5 group-hover:bg-white/10"}`}
-                />
-                <div
-                  className={`absolute inset-0 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl" />
-                </div>
-
-                <div className="relative flex items-center space-x-3 text-gray-300">
-                  <item.icon />
-                  <span
-                    className={`text-sm font-medium transition-all duration-300 ${isActive ? "text-white" : "group-hover:text-white"}`}>
-                    {item.title}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </ScrollArea>
-    </div>
-  </div>
-</>
-
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+    </>
   );
 }

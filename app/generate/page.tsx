@@ -12,6 +12,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 
 function Page() {
+  
   return (
     <div className="min-h-screen bg-black">
       <div className="relative bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]">

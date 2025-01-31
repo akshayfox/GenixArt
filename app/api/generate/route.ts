@@ -1,24 +1,44 @@
-import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+// app/api/generate/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
-export async function POST(req: Request) {
+
+export async function POST(request: NextRequest) {
   try {
-    const { prompt } = await req.json();
+    const body = await request.json();
+    const { prompt } = body;
 
-    const response = await openai.images.generate({
-      model: "dall-e-3",
-      prompt,
-      n: 1,
-      size: "1024x1024",
-    });
+    if (!prompt) {
+      return NextResponse.json(
+        { error: 'Prompt is required' },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json({ imageUrl: response.data[0].url });
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HUGGING_FACE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ inputs: prompt }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to generate image');
+    }
+
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const base64Image = Buffer.from(arrayBuffer).toString('base64');
+    const imageUrl = `data:image/jpeg;base64,${base64Image}`;
+
+    return NextResponse.json({ imageUrl });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error generating image:', error);
     return NextResponse.json(
       { error: 'Failed to generate image' },
       { status: 500 }
