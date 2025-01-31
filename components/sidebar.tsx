@@ -20,9 +20,9 @@ import { useState } from 'react';
 
 const sidebarNavItems = [
   {
-    title: "Dashboard",
+    title: "Home",
     icon: LayoutDashboard,
-    href: "/",
+    href: "/home",
   },
   {
     title: "Generate",

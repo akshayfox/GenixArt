@@ -34,7 +34,6 @@ export default function RootLayout({
               <div className="flex-1 flex-col">
                 <Sidebar />
                 <main
-                  // className={`flex-1 py-8 ${isOpen ? "ml-[290px]" : ""} md:ml-[290px]`}
                 >
                   {children}
                   <Footer />
