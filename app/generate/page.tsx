@@ -81,7 +81,7 @@ function Page() {
               className="relative">
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary/5 rounded-full blur-2xl" />
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
+              <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 shadow-2xl">
                 <ImageGenerator />
               </div>
             </motion.div>
@@ -141,7 +141,7 @@ function Page() {
               Join thousands of creators using our AI to bring their ideas to
               life.
             </p>
-            <Button className="px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 rounded-xl">
+            <Button className="px-8 py-6 bg-gradient-to-r btn-gradient-lg rounded-xl">
               Get Started Now
             </Button>
           </motion.div>

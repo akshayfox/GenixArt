@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 function Page() {
   return (
     <div className="min-h-screen bg-black">
-      {/* Background Effects */}
       <div className="fixed inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
         <motion.div
@@ -33,9 +32,7 @@ function Page() {
         />
       </div>
 
-      {/* Content */}
       <div className="relative">
-        {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
             <motion.div
@@ -59,7 +56,7 @@ function Page() {
                 masterpieces with just a few clicks.
               </p>
               <div className="flex items-center justify-center gap-4">
-                <Button className="px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 rounded-xl">
+                <Button className="px-8 py-6 btn-gradient-lg rounded-xl">
                   <span className="flex items-center gap-2">
                     Start Creating <ChevronRight className="h-4 w-4" />
                   </span>
@@ -153,7 +150,7 @@ function Page() {
             <p className="text-gray-400 mb-8">
               Join thousands of creators using our AI to bring their ideas to life.
             </p>
-            <Button className="px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 rounded-xl">
+            <Button className="px-8 py-6 btn-gradient-lg rounded-xl">
               Get Started Now
             </Button>
           </motion.div>

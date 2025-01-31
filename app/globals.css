@@ -80,3 +80,87 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+
+@layer base {
+  button {
+    @apply outline-none focus:outline-none;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 
+    disabled:opacity-50 disabled:cursor-not-allowed text-sm px-4 py-2 select-none;
+  }
+
+  .btn-gradient {
+    @apply btn bg-gradient-to-r from-blue-500 to-purple-500 text-white 
+    hover:opacity-90 hover:shadow-lg
+    active:scale-[0.98] active:shadow-none
+    disabled:hover:opacity-50 disabled:hover:shadow-none disabled:active:scale-100;
+  }
+
+  .btn-gradient-lg {
+    @apply btn-gradient px-8 py-6 text-base rounded-xl;
+  }
+
+  .btn-outline {
+    @apply btn border border-gray-700 text-gray-200
+    hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-purple-500/20
+    active:scale-[0.98]
+    disabled:hover:bg-transparent;
+  }
+
+  .btn-outline-lg {
+    @apply btn-outline px-8 py-6 text-base rounded-xl;
+  }
+
+  .btn-icon {
+    @apply btn p-2 hover:bg-gray-800/50;
+  }
+
+  .btn-with-icon {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .btn-loading {
+    @apply relative text-transparent transition-none hover:text-transparent;
+  }
+
+  .btn-loading::after {
+    @apply absolute inset-0 flex items-center justify-center text-white;
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='2' x2='12' y2='6'%3E%3C/line%3E%3Cline x1='12' y1='18' x2='12' y2='22'%3E%3C/line%3E%3Cline x1='4.93' y1='4.93' x2='7.76' y2='7.76'%3E%3C/line%3E%3Cline x1='16.24' y1='16.24' x2='19.07' y2='19.07'%3E%3C/line%3E%3Cline x1='2' y1='12' x2='6' y2='12'%3E%3C/line%3E%3Cline x1='18' y1='12' x2='22' y2='12'%3E%3C/line%3E%3Cline x1='4.93' y1='19.07' x2='7.76' y2='16.24'%3E%3C/line%3E%3Cline x1='16.24' y1='7.76' x2='19.07' y2='4.93'%3E%3C/line%3E%3C/svg%3E");
+    animation: spin 1s linear infinite;
+  }
+
+  .btn-group {
+    @apply inline-flex;
+  }
+
+  .btn-group > .btn:not(:last-child) {
+    @apply rounded-r-none border-r-0;
+  }
+
+  .btn-group > .btn:not(:first-child) {
+    @apply rounded-l-none;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer utilities {
+  .focus-ring {
+    @apply focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black focus:outline-none;
+  }
+}
